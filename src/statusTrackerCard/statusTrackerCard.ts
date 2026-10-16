@@ -1,4 +1,6 @@
 import type { AdaptiveCardActionCardResponse, IAdaptiveCardActionInvokeActivity } from '@microsoft/teams.api';
+import type { IActivityContext } from '@microsoft/teams.apps';
+import { sendActionRecordedMessage } from '../targatedMessage/sendActionRecordedMessage.ts';
 
 type AdaptiveCard = AdaptiveCardActionCardResponse['value'];
 
@@ -61,10 +63,14 @@ function readTasks(data: Record<string, unknown>): ITrackerTask[] {
   return data.tasks.map((task: Partial<ITrackerTask>) => ({ text: String(task?.text ?? ''), done: task?.done === true }));
 }
 
-export function handleMarkTaskDone({ activity }: { activity: IAdaptiveCardActionInvokeActivity }): AdaptiveCardActionCardResponse {
+export function handleMarkTaskDone({ activity, send, log }: IActivityContext<IAdaptiveCardActionInvokeActivity>): AdaptiveCardActionCardResponse {
   const { data } = activity.value.action;
   const tasks = readTasks(data);
   const task = tasks[Number(data.index)];
   if (task) task.done = true;
+
+  // Comment out to skip the targeted confirmation while testing.
+  sendActionRecordedMessage({ activity, send, log });
+
   return { statusCode: 200, type: 'application/vnd.microsoft.card.adaptive', value: createStatusTrackerCard(tasks) };
 }

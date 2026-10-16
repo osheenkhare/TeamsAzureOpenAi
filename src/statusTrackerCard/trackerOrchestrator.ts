@@ -3,10 +3,13 @@ import type { IAgentMessage } from '../azureOpenAi/IAgentMessage.ts';
 
 const ACTION_ITEM_COUNT = 5;
 
-const TRACKER_PROMPT = `You will be given a conversation thread from a Teams channel. Each user message is a JSON object with the author, timestamp and text of one message in the thread.
+const TRACKER_PROMPT = `
+You will be given a conversation thread from a Teams channel. ]
+Each user message is a JSON object with the author, timestamp and text of one message in the thread.
 Based on that conversation, respond with exactly ${ACTION_ITEM_COUNT} action items.
 Each action item must be a short, concrete, single-sentence task.
-Respond only with JSON in this shape: {"actionItems": ["...", "...", "...", "...", "..."]}`;
+Respond only with JSON in this shape: {"actionItems": ["...", "...", "...", "...", "..."]}
+`;
 
 export class TrackerOrchestrator {
   private readonly openai: OpenAI;
