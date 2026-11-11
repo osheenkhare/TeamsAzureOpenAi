@@ -1,0 +1,1 @@
+devtunnel login; wt --focus --pos 30,30 --size 100,15 new-tab --colorScheme "Tango Light" powershell -NoExit -Command "devtunnel host -p 3978 --allow-anonymous"; exit;

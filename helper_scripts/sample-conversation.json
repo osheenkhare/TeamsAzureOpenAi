@@ -1,0 +1,130 @@
+{
+  "team": {
+    "displayName": "Ignite Demo Team",
+    "description": "Slack conversation migration proof of concept"
+  },
+  "users": [
+    {
+      "key": "user1",
+      "userName": "pattif"
+    },
+    {
+      "key": "user2",
+      "userName": "alexw"
+    },
+    {
+      "key": "user3",
+      "userName": "meganb"
+    },
+    {
+      "key": "user4",
+      "userName": "nestorw"
+    }
+  ],
+  "channel": {
+    "threads": [
+      {
+        "message": {
+          "author": "user1",
+          "createdDateTime": "2026-05-01T10:00:00.000Z",
+          "content": "Can we review the contract details plan where the net terms are net 60 before Friday?"
+        },
+        "replies": [
+          {
+            "author": "user2",
+            "createdDateTime": "2026-05-01T10:01:00.000Z",
+            "content": "Yes, I will review the Net 60 payment clause today, let me schedule some time in the afternoon."
+          },
+          {
+            "author": "user3",
+            "createdDateTime": "2026-05-01T10:02:00.000Z",
+            "content": "I will check the approval requirements and any other concern and update here."
+          },
+          {
+            "author": "user1",
+            "createdDateTime": "2026-05-01T10:03:00.000Z",
+            "content": "Thanks. Please flag any issues with the Net 60 terms so we can resolve them before Friday."
+          },
+          {
+            "author": "user3",
+            "createdDateTime": "2026-05-01T10:04:00.000Z",
+            "content": "Understood. I will share the contract review findings and any proposed changes before Friday."
+          },
+          {
+            "author": "user2",
+            "createdDateTime": "2026-05-01T10:05:00.000Z",
+            "content": "Hi I am trying to find the contract details but unable to locate all of them."
+          },
+          {
+            "author": "user4",
+            "createdDateTime": "2026-05-01T10:10:00.000Z",
+            "content": "I dont have access to Zava Portal! Where do I get the access from ?"
+          }
+        ]
+      },
+      {
+        "message": {
+          "author": "user2",
+          "createdDateTime": "2026-05-05T10:00:00.000Z",
+          "content": "We need a new contract for a short onboarding workshop. Can the agent create it in Zava so we do not have to enter everything manually?"
+        },
+        "replies": [
+          {
+            "author": "user1",
+            "createdDateTime": "2026-05-05T10:02:00.000Z",
+            "content": "Use the title 'Partner onboarding workshop' and description 'One-time remote onboarding workshop for the customer support team, including training materials and a recorded walkthrough.' Set createdByUser to pattif and the initial status to open."
+          },
+          {
+            "author": "user3",
+            "createdDateTime": "2026-05-05T10:04:00.000Z",
+            "content": "The supplier agreed to Net 10. Please look up that payment policy first so we use the correct review requirement rather than copying the Net 60 workflow."
+          },
+          {
+            "author": "user4",
+            "createdDateTime": "2026-05-05T10:06:00.000Z",
+            "content": "Net 10 does not require review. If the live policy confirms that, use paymentTerm net-10, requireApproval false, and an empty approvalStatus list. Leave the contract open; no review required does not mean we have completed the work."
+          },
+          {
+            "author": "user2",
+            "createdDateTime": "2026-05-05T10:08:00.000Z",
+            "content": "I think we should start with checking the current contracts first for an existing workshop record before creating it. If there is no match, create it with those details."
+          }
+        ]
+      },
+      {
+        "message": {
+          "author": "user3",
+          "createdDateTime": "2026-05-07T14:00:00.000Z",
+          "content": "The supplier for the customer support platform subscription, C-005, has requested Net 80 instead of Net 60. We need to reassess approval requirements, update payment terms where policy allows, and keep processing blocked until all required decisions are recorded."
+        },
+        "replies": [
+          {
+            "author": "user4",
+            "createdDateTime": "2026-05-07T14:04:00.000Z",
+            "content": "Net 80 exceeds our standard Net 60 terms, so this requires Finance review before we make any changes. I will check the procurement policy and confirm whether an exception is permitted for this supplier."
+          },
+          {
+            "author": "user1",
+            "createdDateTime": "2026-05-07T14:06:00.000Z",
+            "content": "Agreed. Please verify the contract terms and confirm whether the supplier's request affects the current subscription renewal. We should document the business justification, cash-flow impact, and any additional approvals required before updating the record."
+          },
+          {
+            "author": "user3",
+            "createdDateTime": "2026-05-07T14:08:00.000Z",
+            "content": "The current record still reflects Net 60, and no approved amendment has been received. I will keep C-005 on hold and ask the supplier to provide the revised terms in writing so we have supporting documentation for review."
+          },
+          {
+            "author": "user2",
+            "createdDateTime": "2026-05-07T14:10:00.000Z",
+            "content": "Finance should assess the impact of extending payment by another 20 days, while Procurement confirms the contractual position. If policy requires an exception, the designated approver must authorize it before anyone changes the payment terms."
+          },
+          {
+            "author": "user1",
+            "createdDateTime": "2026-05-07T14:12:00.000Z",
+            "content": "Next steps are to obtain the written supplier request, complete Finance and Procurement reviews, and record the final approval decision. C-005 must remain blocked until the required approvals are documented and any authorized terms update is verified."
+          }
+        ]
+      }
+    ]
+  }
+}
