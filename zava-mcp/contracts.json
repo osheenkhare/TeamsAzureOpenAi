@@ -1,0 +1,87 @@
+[
+  {
+    "id": "C-001",
+    "title": "Cloud hosting agreement",
+    "description": "Annual cloud hosting and support agreement for Zava's production services.",
+    "status": "in-progress",
+    "paymentTerm": "net-30",
+    "createdByUser": "Alex Morgan",
+    "requireApproval": true,
+    "approvalStatus": [
+      {
+        "user": "Jordan Lee",
+        "approvalStatus": "approved"
+      }
+    ]
+  },
+  {
+    "id": "C-002",
+    "title": "Software licensing renewal",
+    "description": "Renew the team's software licenses for the next annual term.",
+    "status": "open",
+    "paymentTerm": "net-60",
+    "createdByUser": "Taylor Chen",
+    "requireApproval": false,
+    "approvalStatus": []
+  },
+  {
+    "id": "C-003",
+    "title": "Managed security monitoring",
+    "description": "Twelve-month managed threat monitoring and incident response coverage for production systems.",
+    "status": "in-progress",
+    "paymentTerm": "net-30",
+    "createdByUser": "Priya Shah",
+    "requireApproval": true,
+    "approvalStatus": [
+      {
+        "user": "Jordan Lee",
+        "approvalStatus": "approved"
+      }
+    ]
+  },
+  {
+    "id": "C-004",
+    "title": "Office internet service renewal",
+    "description": "Renew business internet service for the headquarters office for another year.",
+    "status": "open",
+    "paymentTerm": "net-30",
+    "createdByUser": "Alex Morgan",
+    "requireApproval": false,
+    "approvalStatus": []
+  },
+  {
+    "id": "C-005",
+    "title": "Customer support platform subscription",
+    "description": "Annual subscription for the customer support ticketing platform and 400 agent seats.",
+    "status": "open",
+    "paymentTerm": "net-60",
+    "createdByUser": "Taylor Chen",
+    "requireApproval": true,
+    "approvalStatus": [
+      {
+        "user": "Jordan Lee",
+        "approvalStatus": "pending"
+      }
+    ]
+  },
+  {
+    "id": "C-006",
+    "title": "Quarterly equipment maintenance",
+    "description": "Preventive maintenance and on-site repairs for office network equipment through the end of the year.",
+    "status": "open",
+    "paymentTerm": "net-30",
+    "createdByUser": "Priya Shah",
+    "requireApproval": false,
+    "approvalStatus": []
+  },
+  {
+    "id": "b2c11d2e-4408-4e50-8c2c-5da04b2887e9",
+    "title": "Test contract",
+    "description": "Sample contract created with test values.",
+    "status": "open",
+    "paymentTerm": "net-30",
+    "createdByUser": "Test User",
+    "requireApproval": false,
+    "approvalStatus": []
+  }
+]

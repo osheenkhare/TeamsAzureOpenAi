@@ -5,6 +5,7 @@ import type { IAgentMessage } from './azureOpenAi/IAgentMessage.ts';
 import { createChannelUserMessage, getChannelThreadContext } from './teamsContext/channelThreadContext.ts';
 import { createStatusTrackerCard } from './statusTrackerCard/statusTrackerCard.ts';
 import type { TrackerOrchestrator } from './statusTrackerCard/trackerOrchestrator.ts';
+import { createMcpWidgetMessage } from './widget/widgetHtmlMcp.ts';
 
 // Context type the SDK passes to app.message handlers.
 type MessageContext = Parameters<Parameters<App['message']>[1]>[0];
@@ -63,12 +64,18 @@ export function createMentionHandler(app: App, agent: OpenAiAgenticOrchestrator,
 
     // Channel conversation ids end with ';messageid=<rootId>'; without it there is no thread to reply into.
     const threadRootId = activity.conversation.id.match(/;messageid=([^;]+)/)?.[1];
-    if (!threadRootId) return;
+    if (!threadRootId) return;    
 
     // Best-effort acknowledgement; a failed reaction should not block the reply.
     await api.conversations
       .addReaction(activity.conversation.id, activity.id, SPARKLES_REACTION)
       .catch(() => {});
+
+    // Render the widget if the user explicitly requests it.
+    if (stripMentionsText(activity)?.trim().toLowerCase() === 'widget') {
+      await send(await createMcpWidgetMessage());
+      return;
+    }
 
     // Earlier thread messages (empty for a top-level post or if Graph fails), then the new message.
     const conversation: IAgentMessage[] =

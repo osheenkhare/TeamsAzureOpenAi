@@ -1,0 +1,22 @@
+{
+    "net-10":{
+        "policy": "NET 10 Policy does not require any review.",
+        "requiresApproval": false,
+        "requiredApprovers": []
+    },
+    "net-30": {
+        "policy": "NET 30 Policy does not require any review and is auto approved, no manual approval is needed.",
+        "requiresApproval": false,
+        "requiredApprovers": []
+    },
+    "net-60": {
+        "policy": "NET 60 Policy requires review and approval from the finance team before processing. Mandatory approval from Jamie Lee and Liam Smith is required.",
+        "requiresApproval": true,
+        "requiredApprovers": ["Jamie Lee", "Liam Smith"]
+    },
+    "net-80": {
+        "policy": "NET 80 Policy requires review and approval from both the finance team and the legal team before processing. Mandatory approval from Jamie Lee, Liam Smith, and Olivia Brown is required.",
+        "requiresApproval": true,
+        "requiredApprovers": ["Jamie Lee", "Liam Smith", "Olivia Brown"]
+    }
+}

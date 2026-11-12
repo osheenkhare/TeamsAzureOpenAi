@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "zava-contracts-mcp": {
+      "tools": [
+        "*"
+      ],
+      "type": "http",
+      "url": "http://127.0.0.1:3001/mcp",
+      "headers": {}
+    }
+  }
+}

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Active contracts</title>
+  </head>
+  <body style="margin: 0; color: #242424; background: #ffffff; font-family: 'Segoe UI', sans-serif; letter-spacing: 0;">
+    <main id="widget-root" style="display: flow-root; padding: 20px;">
+      <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px;">
+        <div>
+          <p style="margin: 0 0 4px; color: #616161; font-size: 12px; font-weight: 600;">ZAVA CONTRACTS</p>
+          <h1 style="margin: 0; font-size: 22px; font-weight: 600;">Active contracts</h1>
+        </div>
+      </header>
+      <p id="status" role="status" style="margin: 0 0 16px; color: #616161; font-size: 13px;">Loading contracts...</p>
+      <section id="contracts" aria-label="Active contracts" aria-busy="true" tabindex="0" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; max-height: 300px; overflow-y: auto; scrollbar-gutter: stable;"></section>
+    </main>
+    <script id="contracts-data" type="application/json">[]</script>
+    <script>
+      const root = document.getElementById("widget-root");
+      const contractsElement = document.getElementById("contracts");
+      const statusElement = document.getElementById("status");
+      const pendingRequests = new Map();
+      let requestId = 0;
+
+      function postToHost(message) {
+        window.parent.postMessage({ jsonrpc: "2.0", ...message }, "*");
+      }
+
+      window.addEventListener("message", (event) => {
+        if (event.source !== window.parent) return;
+        let message = event.data;
+        if (typeof message === "string") {
+          try { message = JSON.parse(message); } catch { return; }
+        }
+        if (message?.jsonrpc !== "2.0") return;
+        if (!("result" in message) && !("error" in message)) return;
+        const pending = pendingRequests.get(message.id);
+        if (!pending) return;
+        pendingRequests.delete(message.id);
+        clearTimeout(pending.timer);
+        if (message.error) pending.reject(new Error(message.error.message || "Host request failed."));
+        else pending.resolve(message.result);
+      });
+
+      function requestHost(method, params) {
+        return new Promise((resolve, reject) => {
+          const id = `contracts-${++requestId}`;
+          const timer = setTimeout(() => {
+            pendingRequests.delete(id);
+            reject(new Error("The host did not respond. Please try again."));
+          }, 15000);
+          pendingRequests.set(id, { resolve, reject, timer });
+          postToHost({ id, method, params });
+        });
+      }
+
+      function addText(parent, tag, text, style) {
+        const element = document.createElement(tag);
+        element.textContent = text;
+        element.style.cssText = style;
+        parent.appendChild(element);
+        return element;
+      }
+
+      function renderContracts(contracts) {
+        contractsElement.replaceChildren();
+        const activeContracts = contracts.filter((contract) => contract.status !== "approved");
+        const statusColors = {
+          open: { label: "Open", color: "#046c4e", background: "#e8f5ee" },
+          "in-progress": { label: "In progress", color: "#075985", background: "#eaf4fb" },
+          blocked: { label: "Blocked", color: "#b42318", background: "#fff0ee" }
+        };
+
+        for (const contract of activeContracts) {
+          const card = document.createElement("article");
+          card.style.cssText = "min-width: 0; padding: 16px; border: 1px solid #e0e0e0; border-radius: 6px; overflow-wrap: anywhere;";
+          const heading = document.createElement("div");
+          heading.style.cssText = "display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;";
+          card.appendChild(heading);
+          addText(heading, "span", contract.id, "color: #616161; font-size: 12px;");
+          const badge = statusColors[contract.status];
+          addText(heading, "span", badge?.label || contract.status, `padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; color: ${badge?.color || "#424242"}; background: ${badge?.background || "#f5f5f5"};`);
+          addText(card, "h2", contract.title, "margin: 12px 0 6px; font-size: 16px; line-height: 1.4; font-weight: 600;");
+          addText(card, "p", contract.description, "margin: 0 0 16px; color: #616161; font-size: 13px; line-height: 1.5;");
+          const details = document.createElement("dl");
+          details.style.cssText = "display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 12px; margin: 0; border-top: 1px solid #eeeeee; padding-top: 12px; font-size: 12px; line-height: 1.5;";
+          card.appendChild(details);
+          const approvals = !contract.requireApproval ? "Not required" : contract.approvalStatus.length
+            ? contract.approvalStatus.map((approval) => `${approval.user}: ${approval.approvalStatus}`).join("; ")
+            : "Pending";
+          for (const [label, value] of [["Owner", contract.createdByUser], ["Payment", contract.paymentTerm.replace("net-", "Net ")], ["Approval", approvals]]) {
+            addText(details, "dt", label, "color: #616161;");
+            addText(details, "dd", value, "margin: 0; color: #242424;");
+          }
+          contractsElement.appendChild(card);
+        }
+        statusElement.textContent = activeContracts.length
+          ? `${activeContracts.length} active contract${activeContracts.length === 1 ? "" : "s"}`
+          : "No active contracts.";
+      }
+
+      renderContracts(JSON.parse(document.getElementById("contracts-data").textContent));
+      contractsElement.setAttribute("aria-busy", "false");
+
+      requestHost("ui/initialize", {
+        protocolVersion: "2026-01-26",
+        appInfo: { name: "Zava active contracts", version: "1.0.0" },
+        appCapabilities: {}
+      }).then(() => {
+        postToHost({ method: "ui/notifications/initialized", params: {} });
+        let lastHeight;
+
+        function reportHeight() {
+          const height = root.getBoundingClientRect().height;
+          if (height === lastHeight && window.innerHeight >= height) return;
+          lastHeight = height;
+          postToHost({ method: "ui/notifications/size-changed", params: { height } });
+        }
+
+        new ResizeObserver(reportHeight).observe(root);
+        reportHeight();
+      }).catch((error) => console.error(error));
+    </script>
+  </body>
+</html>

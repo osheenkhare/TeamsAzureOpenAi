@@ -16,8 +16,8 @@ appsettings.json
 secrets.json
 .env
 .env.*
-!.env.example
 
+!.env.example
 .vscode/
 .idea/
 .DS_Store
@@ -26,4 +26,3 @@ Thumbs.db
 package-lock.json
 
 *.log
-
