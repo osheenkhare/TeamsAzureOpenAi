@@ -73,15 +73,5 @@
     "createdByUser": "Priya Shah",
     "requireApproval": false,
     "approvalStatus": []
-  },
-  {
-    "id": "b2c11d2e-4408-4e50-8c2c-5da04b2887e9",
-    "title": "Test contract",
-    "description": "Sample contract created with test values.",
-    "status": "open",
-    "paymentTerm": "net-30",
-    "createdByUser": "Test User",
-    "requireApproval": false,
-    "approvalStatus": []
   }
 ]
